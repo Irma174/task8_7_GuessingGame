@@ -50,7 +50,14 @@ function startGame(){
 
         isNaN(minValue) ? minValue = 0 : minValue;
         isNaN(maxValue) ? maxValue = 100 : maxValue;
-        
+
+        let numberReserve;
+        if(minValue > maxValue){
+            numberReserve = maxValue;
+            maxValue = minValue;
+            minValue = numberReserve;   
+        }
+           
         Swal.fire({
             text: 'Я работаю только с числами от -999 до 999! \n\u{1F913}',
             title:`Загадайте любое целое число от ${minValue} до ${maxValue}, а я его угадаю`           
