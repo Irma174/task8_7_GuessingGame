@@ -6,37 +6,80 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans" rel="stylesheet">
-    <link rel="stylesheet" href="style.css" type="text/css"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+
 <div class="container">
-    <div class="row game-card align-items-center"> <!--строка карточной игры-->
-        <div class="col col-md-4 offset-md-4"> <!--колонка-->
-            <div class="card text-center"> <!--карта-->
-                <div class="card-header"> <!--шапка карты-->
-                    <p class="m-0">Вопрос №<span id="orderNumberField">5</span></p> <!--id поле номера заказа-->
+    <div class="row game-card align-items-center">
+        <div class="col col-md-4 offset-md-4"> 
+            <div class="card text-center"> 
+                <div class="card-header"> 
+                    <p class="m-0">Вопрос №<span id="orderNumberField">5</span></p> 
                 </div>
-                <div class="card-body"> <!--тело карты-->
-                    <div class="row no-gutters"> <!--ряд без колонок-->
+                <div class="card-body"> 
+                    <div class="row no-gutters"> 
                         <div class="col">
-                            <h3 class="card-title m-0"><span id="answerField">Вы загадали число 5?</span></h3><!--поле ответа-->
+                            <h3 class="card-title m-0"><span id="answerField">Вы загадали число 5?</span></h3>
                         </div>
                     </div>
                 </div>
-                <div class="card-body"> <!--тело карты-->
-                    <div class="btn-group"> <!--группа кнопок-->
-                        <button class="btn btn-info" id="btnLess">&#129047;<br>меньше</button> <!--кнопка меньше-->
-                        <button class="btn btn-success btn-lg" id="btnEqual">Верно!</button> <!--кнопка успеха-->
-                        <button class="btn btn-info" id="btnOver">больше<br>&#129045;</button> <!--кнопка больше-->
+                <div class="card-body"> 
+                    <div class="btn-group" role="group"> 
+                        <button class="btn btn-info" id="btnLess">&#129047;<br>меньше</button> 
+                        <button class="btn btn-success btn-lg" id="btnEqual">Верно!</button> 
+                        <button class="btn btn-info" id="btnOver">больше<br>&#129045;</button> 
                     </div>
                 </div>
-                <div class="card-footer"> <!--подвал карты-->
-                    <button class="btn btn-link" id="btnRetry">Заново</button> <!--кнопка-ссылка повторить попытку-->
+                <div class="card-footer">
+                    <button class="btn btn-success btn-sm" id="btnRetry">Заново</button> 
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script src="script.js"></script>
+
+        <div class="col-12">
+            <button class="start1 text-uppercase"> Нажми на меня!</button>
+        </div>
+
+        <div class="modal fade" id="numberModal" tabindex="-1" aria-labelledby="maxMinNumber" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="questionNumber">В каком диапазоне будем угадывать числа? </h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Минимальное значение числа для игры</label>
+                                <input type="text" id="numberMin" class="form-control" placeholder ="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Максимальное значение числа для игры</label>
+                                <input type="text" id="numberMax" class="form-control" placeholder ="100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" id="btnOk" class="btn btn-danger text-uppercase" data-bs-dismiss="modal">ОК</button>
+                  <button type="button" id="btnClose" class="btn btn-info text-uppercase">Отмена</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/sweetalert2.all.min.js"></script>
+<script src="/js/script.js"></script>
 </body>
 </html>
