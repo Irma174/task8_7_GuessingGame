@@ -41,10 +41,12 @@ function startGame(){
     document.querySelector('#btnOk').addEventListener('click',()=> {
 
         minValue = parseInt(document.querySelector('#numberMin').value);
-        (minValue == "") ? minValue = 0 : minValue;
+        ((minValue == "") && (minValue != 0)) ? minValue = 0 : minValue;
+        console.log('minValue= ' , minValue);
     
         maxValue = parseInt(document.querySelector('#numberMax').value);
-        (maxValue == "") ? maxValue = 100 : maxValue; 
+        ((maxValue == "") && (maxValue != 0)) ? maxValue = 100 : maxValue; 
+        console.log('maxValue= ' , maxValue);
     
         limitMinMaxNumber();
 
