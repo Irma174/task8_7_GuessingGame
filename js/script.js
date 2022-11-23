@@ -37,6 +37,7 @@ function startGame(){
     const modalMaxMin = new bootstrap.Modal(elemModalMaxMin);
     modalMaxMin.show();
 
+    clear();
 
     document.querySelector('#btnOk').addEventListener('click',()=> {
 
@@ -73,6 +74,10 @@ function startGame(){
         answerField.innerText = `Вы загадали число ${ansverNumberResult}?`;
     
     });
+
+    document.querySelector('#btnClose').addEventListener('click', ()=>{
+        clear();
+    })
 
 }
 
@@ -261,6 +266,10 @@ function failedResult() {
     gameRun = false;
 }
 
+function clear(){   
+    document.querySelector('#numberMin').value = "";
+    document.querySelector('#numberMax').value = ""; 
+}
 
 /*
 // "Заново"
