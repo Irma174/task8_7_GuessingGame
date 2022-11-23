@@ -83,13 +83,7 @@ document.querySelector('#btnRetry').addEventListener('click', startGame);
 document.querySelector('#btnOver').addEventListener('click', function () {
     if (gameRun){
         if (minValue === maxValue){
-            const phraseRandom = Math.round( Math.random()); 
-            const answerPhrase = (phraseRandom === 1) ?
-                `Вы загадали неправильное число!\n\u{1F914}` :
-                `Я сдаюсь..\n\u{1F92F}`;
-
-            answerField.innerText = answerPhrase; 
-            gameRun = false;
+            failedResult();
         } else {
             minValue = answerNumber  + 1;
             answerNumber  = Math.floor((minValue + maxValue) / 2);
@@ -111,28 +105,27 @@ document.querySelector('#btnOver').addEventListener('click', function () {
 // "Меньше"
 document.querySelector('#btnLess').addEventListener('click', function () {
     if (gameRun){
-        if (minValue === maxValue){
-            const phraseRandom = Math.round( Math.random());
-            const answerPhrase = (phraseRandom === 1) ? 
-                `Вы загадали неправильное число!\n\u{1F914}` :
-                `Я сдаюсь..\n\u{1F92F}`;
-
-            answerField.innerText = answerPhrase;
-            gameRun = false;
+        if ((minValue === maxValue)){
+            failedResult();
         } else {
-            maxValue = answerNumber  - 1; 
-            answerNumber  = Math.floor((minValue + maxValue) / 2);
-            (answerNumber == 0) ? ansverNumberResult = answerNumber : ansverNumberResult = numberWords(answerNumber);
-            ((ansverNumberResult.length > 20)) ? ansverNumberResult = answerNumber : ansverNumberResult;
-            orderNumber++;
-            orderNumberField.innerText = orderNumber;
-            const phraseRandomQuesLess = Math.round( Math.random()*3);
-            const questionPhraseLess = (phraseRandomQuesLess === 3) ? `Наверное, вы загадали число ${ansverNumberResult}?`:
-            ((phraseRandomQuesLess < 3)&&(phraseRandomQuesLess >= 2)) ? `Вы загадали число ${ansverNumberResult}?`:
-            ((phraseRandomQuesLess < 2)&&(phraseRandomQuesLess >= 1)) ? `Я думаю, что Вы загадали число ${ansverNumberResult}?`: 
-            `Вы загадали число ${ansverNumberResult}? Я угадал?`;
+            maxValue = answerNumber - 1;
+                        
+            if (maxValue < minValue){
+                failedResult();
+            } else{
+                answerNumber  = Math.floor((minValue + maxValue) / 2);
+                (answerNumber == 0) ? ansverNumberResult = answerNumber : ansverNumberResult = numberWords(answerNumber);
+                ((ansverNumberResult.length > 20)) ? ansverNumberResult = answerNumber : ansverNumberResult;
+                orderNumber++;
+                orderNumberField.innerText = orderNumber;
+                const phraseRandomQuesLess = Math.round( Math.random()*3);
+                const questionPhraseLess = (phraseRandomQuesLess === 3) ? `Наверное, вы загадали число ${ansverNumberResult}?`:
+                ((phraseRandomQuesLess < 3)&&(phraseRandomQuesLess >= 2)) ? `Вы загадали число ${ansverNumberResult}?`:
+                ((phraseRandomQuesLess < 2)&&(phraseRandomQuesLess >= 1)) ? `Я думаю, что Вы загадали число ${ansverNumberResult}?`: 
+                `Вы загадали число ${ansverNumberResult}? Я угадал?`;
 
-            answerField.innerText = questionPhraseLess;
+                answerField.innerText = questionPhraseLess;
+            }
         }
     }
 })
@@ -161,7 +154,8 @@ let inits =  {
     '6' : 'шесть',
     '7' : 'семь',
     '8' : 'восемь',
-    '9' : 'девять'
+    '9' : 'девять',
+    '10' : 'десять'
 };
 
 let tens = {
@@ -209,11 +203,11 @@ let tensNumber;
 function numberWords(numberResult) {
 
     let ansverNumberEl = Math.abs(numberResult);
-    let ansverNumberDividedTen = ansverNumberEl/10;
+    let ansverNumberDividedTen = ansverNumberEl/10; // 110/10 = 11
     
-    if (ansverNumberDividedTen < 1){
+    if (ansverNumberDividedTen <= 1){
         ansverNumberEl = inits[String(ansverNumberEl)];
-    } else if (ansverNumberDividedTen>1 && ansverNumberDividedTen<10){
+    } else if (ansverNumberDividedTen > 1 && ansverNumberDividedTen < 10){
         (String(ansverNumberEl) in tens)? ansverNumberEl = tens[String(ansverNumberEl)] :
         (String(ansverNumberEl) in dozens)? ansverNumberEl = dozens[String(ansverNumberEl)] :
         (
@@ -221,16 +215,18 @@ function numberWords(numberResult) {
             dozensNumber = ansverNumberEl - initsNumber,
             ansverNumberEl = dozens[String(dozensNumber)] + ' ' +  inits[String(initsNumber)]
             )
-    } else if ((ansverNumberDividedTen>10) && ((numberResult/10)<100)){
-        hundredsNumber = ansverNumberEl - ansverNumberEl%100;
-        dozensNumber = ansverNumberEl%100 -ansverNumberEl%100%10;
-        initsNumber = ansverNumberEl%10;
-        tensNumber = dozensNumber + initsNumber;
+    } else if ((ansverNumberDividedTen >= 10) && ((numberResult/10)<100)){
+        hundredsNumber = ansverNumberEl - ansverNumberEl%100; //110 - 10 = 100
+        dozensNumber = ansverNumberEl%100 -ansverNumberEl%100%10; //10 - 0 = 10
+        initsNumber = ansverNumberEl%10; // 0
+        tensNumber = dozensNumber + initsNumber; //10 +0 = 10 
         
         (dozensNumber == 10) ? ansverNumberEl = hundreds[String(hundredsNumber)] + ' ' + tens[String(tensNumber)]:
         ((dozensNumber == initsNumber) && (initsNumber != 0)) ? ansverNumberEl = hundreds[String(hundredsNumber)] + ' ' + inits[String(initsNumber)]:
         ((initsNumber == 0) && (dozensNumber!=0)) ? ansverNumberEl = hundreds[String(hundredsNumber)] + ' ' + dozens[String(dozensNumber)]:
-        ((dozensNumber==0)&&(initsNumber==0)) ? ansverNumberEl = hundreds[String(hundredsNumber)] :
+        ((dozensNumber==0) && (initsNumber==0)) ? ansverNumberEl = hundreds[String(hundredsNumber)] :
+        ((hundredsNumber == 100) && (dozensNumber == 0) && (initsNumber != 0)) ? ansverNumberEl = hundreds[String(hundredsNumber)] + ' ' + inits[String(initsNumber)]:
+        ((hundredsNumber == 100) && (dozensNumber == 0) && (initsNumber == 0)) ? ansverNumberEl = hundreds[String(hundredsNumber)]:
         ansverNumberEl = hundreds[String(hundredsNumber)] + ' ' + dozens[String(dozensNumber)] + ' ' + inits[String(initsNumber)];
     }   
     
@@ -250,7 +246,17 @@ function limitMinMaxNumber(){
         let temporaryVar = maxValue;
         maxValue = minValue;
         minValue = temporaryVar;
-    } 
+    }  
+}
+
+function failedResult() {
+    const phraseRandom = Math.round( Math.random());
+    const answerPhrase = (phraseRandom === 1) ?
+    `Вы загадали неправильное число!\n\u{1F914}` :
+    `Я сдаюсь..\n\u{1F92F}`;
+
+    answerField.innerText = answerPhrase;
+    gameRun = false;
 }
 
 
