@@ -43,11 +43,9 @@ function startGame(){
 
         minValue = parseInt(document.querySelector('#numberMin').value);
         ((minValue == "") && (minValue != 0)) ? minValue = 0 : minValue;
-        console.log('minValue= ' , minValue);
     
         maxValue = parseInt(document.querySelector('#numberMax').value);
         ((maxValue == "") && (maxValue != 0)) ? maxValue = 100 : maxValue; 
-        console.log('maxValue= ' , maxValue);
     
         limitMinMaxNumber();
 
@@ -74,11 +72,8 @@ function startGame(){
         answerField.innerText = `Вы загадали число ${ansverNumberResult}?`;
     
     });
-
-    document.querySelector('#btnClose').addEventListener('click', ()=>{
-        clear();
-    })
-
+    
+    document.querySelector('#btnClose').addEventListener('click', clear)
 }
 
 
@@ -93,18 +88,7 @@ document.querySelector('#btnOver').addEventListener('click', function () {
             failedResult();
         } else {
             minValue = answerNumber  + 1;
-            answerNumber  = Math.floor((minValue + maxValue) / 2);
-            (answerNumber == 0) ? ansverNumberResult = answerNumber : ansverNumberResult = numberWords(answerNumber);
-            ((ansverNumberResult.length > 20)) ? ansverNumberResult = answerNumber : ansverNumberResult;
-            orderNumber++;
-            orderNumberField.innerText = orderNumber;
-            const phraseRandomQuesOver = Math.round( Math.random()*3);
-            const questionPhraseOver = (phraseRandomQuesOver === 3) ? `Точно больше? \n\u{1F609} Тогда наверное вы загадали число ${ansverNumberResult}?`:
-            ((phraseRandomQuesOver < 3)&&(phraseRandomQuesOver >= 2)) ? `Вы загадали число ${ansverNumberResult}?`:
-            ((phraseRandomQuesOver < 2)&&(phraseRandomQuesOver >= 1)) ? `Таак \n\u{1F914}... Я думаю, что Вы загадали число ${ansverNumberResult}?`: 
-            `Вы загадали число ${ansverNumberResult}? Я угадал?`;
-            
-            answerField.innerText = questionPhraseOver;
+            questionAnswer();
         }
     }
 })
@@ -116,25 +100,9 @@ document.querySelector('#btnLess').addEventListener('click', function () {
             failedResult();
         } else {
             maxValue = answerNumber - 1;
-                        
-            if (maxValue < minValue){
-                failedResult();
-            } else{
-                answerNumber  = Math.floor((minValue + maxValue) / 2);
-                (answerNumber == 0) ? ansverNumberResult = answerNumber : ansverNumberResult = numberWords(answerNumber);
-                ((ansverNumberResult.length > 20)) ? ansverNumberResult = answerNumber : ansverNumberResult;
-                orderNumber++;
-                orderNumberField.innerText = orderNumber;
-                const phraseRandomQuesLess = Math.round( Math.random()*3);
-                const questionPhraseLess = (phraseRandomQuesLess === 3) ? `Наверное, вы загадали число ${ansverNumberResult}?`:
-                ((phraseRandomQuesLess < 3)&&(phraseRandomQuesLess >= 2)) ? `Вы загадали число ${ansverNumberResult}?`:
-                ((phraseRandomQuesLess < 2)&&(phraseRandomQuesLess >= 1)) ? `Я думаю, что Вы загадали число ${ansverNumberResult}?`: 
-                `Вы загадали число ${ansverNumberResult}? Я угадал?`;
-
-                answerField.innerText = questionPhraseLess;
+            (maxValue < minValue) ? failedResult() : questionAnswer();
             }
         }
-    }
 })
 
 //Результат = ответ
@@ -210,7 +178,7 @@ let tensNumber;
 function numberWords(numberResult) {
 
     let ansverNumberEl = Math.abs(numberResult);
-    let ansverNumberDividedTen = ansverNumberEl/10; // 110/10 = 11
+    let ansverNumberDividedTen = ansverNumberEl/10;
     
     if (ansverNumberDividedTen <= 1){
         ansverNumberEl = inits[String(ansverNumberEl)];
@@ -223,10 +191,10 @@ function numberWords(numberResult) {
             ansverNumberEl = dozens[String(dozensNumber)] + ' ' +  inits[String(initsNumber)]
             )
     } else if ((ansverNumberDividedTen >= 10) && ((numberResult/10)<100)){
-        hundredsNumber = ansverNumberEl - ansverNumberEl%100; //110 - 10 = 100
-        dozensNumber = ansverNumberEl%100 -ansverNumberEl%100%10; //10 - 0 = 10
-        initsNumber = ansverNumberEl%10; // 0
-        tensNumber = dozensNumber + initsNumber; //10 +0 = 10 
+        hundredsNumber = ansverNumberEl - ansverNumberEl%100; 
+        dozensNumber = ansverNumberEl%100 -ansverNumberEl%100%10; 
+        initsNumber = ansverNumberEl%10; 
+        tensNumber = dozensNumber + initsNumber; 
         
         (dozensNumber == 10) ? ansverNumberEl = hundreds[String(hundredsNumber)] + ' ' + tens[String(tensNumber)]:
         ((dozensNumber == initsNumber) && (initsNumber != 0)) ? ansverNumberEl = hundreds[String(hundredsNumber)] + ' ' + inits[String(initsNumber)]:
@@ -250,9 +218,9 @@ function limitMinMaxNumber(){
     (minValue < (-999)) ? minValue = -999 : minValue;
     (maxValue < (-999)) ? maxValue = -999 : maxValue; 
     if (maxValue < minValue) {
-        let temporaryVar = maxValue;
+        let temporaryVal = maxValue;
         maxValue = minValue;
-        minValue = temporaryVar;
+        minValue = temporaryVal;
     }  
 }
 
@@ -271,20 +239,21 @@ function clear(){
     document.querySelector('#numberMax').value = ""; 
 }
 
-/*
-// "Заново"
-document.querySelector('#btnRetry').addEventListener('click', function () { 
-    gameRun = true;
-    minValue = parseInt(prompt('Минимальное знание числа для игры','0'));
-    maxValue = parseInt(prompt('Максимальное знание числа для игры','100'));
-    limitMinMaxNumber();
-    alert(`Загадайте любое целое число от ${minValue} до ${maxValue}, а я его угадаю`);
-    orderNumber = 1;
-    answerNumber = Math.floor((minValue + maxValue) / 2);
-    orderNumberField.innerText = orderNumber; 
+function questionAnswer(){
+    answerNumber  = Math.floor((minValue + maxValue) / 2);
     (answerNumber == 0) ? ansverNumberResult = answerNumber : ansverNumberResult = numberWords(answerNumber);
     ((ansverNumberResult.length > 20)) ? ansverNumberResult = answerNumber : ansverNumberResult;
-    answerField.innerText = `Вы загадали число ${ansverNumberResult}?`;
-})
+    orderNumber++;
+    orderNumberField.innerText = orderNumber;
+    const phraseRandomQuesOver = Math.round( Math.random()*5);
+    const questionPhraseOver = (phraseRandomQuesOver === 5) ? `Точно больше? \n\u{1F609} Тогда наверное вы загадали число ${ansverNumberResult}?`:
+        ((phraseRandomQuesOver < 5)&&(phraseRandomQuesOver >= 4)) ? `Вы загадали число ${ansverNumberResult}?`:
+        ((phraseRandomQuesOver < 4)&&(phraseRandomQuesOver >= 3)) ? `Таак \n\u{1F914}... Я думаю, что Вы загадали число ${ansverNumberResult}?`: 
+        ((phraseRandomQuesOver < 3)&&(phraseRandomQuesOver >= 2)) ? `Наверное, вы загадали число ${ansverNumberResult}?`:
+        ((phraseRandomQuesOver < 2)&&(phraseRandomQuesOver >= 1)) ? `\n\u{1F9D0} Я думаю, что Вы загадали число ${ansverNumberResult}?`: 
+        `Вы загадали число ${ansverNumberResult}? Я угадал?`;
+    
+    answerField.innerText = questionPhraseOver;
 
-}*/
+}
+
