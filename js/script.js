@@ -1,3 +1,6 @@
+const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+
 let minValue;
 let maxValue;
 
@@ -25,7 +28,7 @@ but1.addEventListener('click', function() {
         startGame();
     }else{
         container1.hidden = true,
-        but1.hidden = false
+        but1.hidden = false;
     }
   })
 });

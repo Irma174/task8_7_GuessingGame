@@ -1,13 +1,28 @@
 body{
     background-image: url(../images/bubbles_background.jpg);
 }
+html{
+    box-sizing: border-box;
+    font-size: 15px;
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+*, *::after, *::before{
+    box-sizing: inherit;
+}
+
 
 .game-card {
     height: 200px;
     font-family: 'Open Sans', monospace;
     margin-top: 150px;
+    
 }
-
+.container{
+    max-width: 1000px;
+}
 
 .modal{
     display: none;
@@ -30,5 +45,14 @@ body{
     border-bottom-left-radius: 73px;
     border-bottom-right-radius: 6px;
     box-shadow: inset -2px -3px 17px 15px rgba(190, 19, 19, 0.4);
+    align-items: center;
+}
+
+.col-12{
+    align-items: center;
+}
+
+.btn-group{
+    width: 100%;
 }
 
